@@ -1,6 +1,7 @@
 const { Router } = require('express');
 
 const Todo = require('./model');
+const auth = require('../auth/middleware');
 
 const router = new Router();
 
@@ -26,7 +27,7 @@ router.get('/todos/:id', (req, res, next) => {
     .catch(error => next(error));
 });
 
-router.post('/todos', (req, res, next) => {
+router.post('/todos', auth, (req, res, next) => {
   Todo.create(req.body)
     .then(todo => {
       if (!todo) {
@@ -37,7 +38,7 @@ router.post('/todos', (req, res, next) => {
     .catch(error => next(error));
 });
 
-router.put('/todos/:id', (req, res, next) => {
+router.put('/todos/:id', auth, (req, res, next) => {
   Todo.findByPk(req.params.id)
     .then(todo => {
       if (!todo) {
@@ -48,7 +49,7 @@ router.put('/todos/:id', (req, res, next) => {
     .catch(error => next(error));
 });
 
-router.delete('/todos/:id', (req, res, next) => {
+router.delete('/todos/:id', auth, (req, res, next) => {
   Todo.findByPk(req.params.id)
     .then(todo => {
       if (!todo) {

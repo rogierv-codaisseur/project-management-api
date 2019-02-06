@@ -6,7 +6,7 @@ const auth = require('../auth/middleware');
 
 const router = new Router();
 
-router.get('/projects', auth, (req, res, next) => {
+router.get('/projects', (req, res, next) => {
   const limit = Math.min(5, req.query.limit) || 5;
   const offset = req.query.offset || 0;
 
@@ -17,7 +17,7 @@ router.get('/projects', auth, (req, res, next) => {
     .catch(error => next(error));
 });
 
-router.get('/projects/:id', auth, (req, res, next) => {
+router.get('/projects/:id', (req, res, next) => {
   Project.findByPk(req.params.id, { include: [Todo] })
     .then(project => {
       if (!project) {
@@ -29,7 +29,7 @@ router.get('/projects/:id', auth, (req, res, next) => {
 });
 
 router.post('/projects', auth, (req, res, next) => {
-  Project.create(req.body)
+  Project.create({ ...req.body, projectCreator: req.user.email })
     .then(project => {
       if (!project) {
         return res.status(404).send({ message: 'Project does not exist.' });

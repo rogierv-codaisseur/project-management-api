@@ -20,6 +20,10 @@ const Project = sequelize.define(
       type: Sequelize.DATE,
       field: 'end_date',
       allowNull: true
+    },
+    projectCreator: {
+      type: Sequelize.STRING,
+      field: 'project_creator'
     }
   },
   { timestamps: false, tableName: 'projects' }
