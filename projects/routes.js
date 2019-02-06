@@ -2,10 +2,11 @@ const { Router } = require('express');
 
 const Project = require('./model');
 const Todo = require('../todos/model');
+const auth = require('../auth/middleware');
 
 const router = new Router();
 
-router.get('/projects', (req, res, next) => {
+router.get('/projects', auth, (req, res, next) => {
   const limit = Math.min(5, req.query.limit) || 5;
   const offset = req.query.offset || 0;
 
@@ -16,7 +17,7 @@ router.get('/projects', (req, res, next) => {
     .catch(error => next(error));
 });
 
-router.get('/projects/:id', (req, res, next) => {
+router.get('/projects/:id', auth, (req, res, next) => {
   Project.findByPk(req.params.id, { include: [Todo] })
     .then(project => {
       if (!project) {
@@ -27,7 +28,7 @@ router.get('/projects/:id', (req, res, next) => {
     .catch(error => next(error));
 });
 
-router.post('/projects', (req, res, next) => {
+router.post('/projects', auth, (req, res, next) => {
   Project.create(req.body)
     .then(project => {
       if (!project) {
@@ -38,7 +39,7 @@ router.post('/projects', (req, res, next) => {
     .catch(error => next(error));
 });
 
-router.put('/projects/:id', (req, res, next) => {
+router.put('/projects/:id', auth, (req, res, next) => {
   Project.findByPk(req.params.id)
     .then(project => {
       if (!project) {
@@ -51,7 +52,7 @@ router.put('/projects/:id', (req, res, next) => {
     .catch(error => next(error));
 });
 
-router.delete('/projects/:id', (req, res, next) => {
+router.delete('/projects/:id', auth, (req, res, next) => {
   Project.findByPk(req.params.id)
     .then(project => {
       if (!project) {
