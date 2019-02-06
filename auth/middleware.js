@@ -8,6 +8,7 @@ function auth(req, res, next) {
   if (auth && auth[0] === 'Bearer' && auth[1]) {
     try {
       const data = toData(auth[1]);
+      console.log(res.body);
       User.findById(data.userId)
         .then(user => {
           if (!user) return next('User does not exist');

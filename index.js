@@ -11,8 +11,8 @@ const port = process.env.PORT || 4000;
 
 app
   .use(bodyParser.json())
-  .use(authRouter)
   .use(projectRouter)
   .use(todoRouter)
+  .use(authRouter)
   .use(userRouter)
   .listen(port, () => console.log(`Listening on port ${port}`));
